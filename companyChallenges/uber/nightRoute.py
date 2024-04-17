@@ -19,18 +19,26 @@ def solution(city):
   return shortest(city, 0, set())
     
 def shortest(city, cur, visited):
+  # if already in the last island
   if cur == len(city) - 1: return 0
+
+  # if not in last island
   best = None
-  
+  # try all possible nodes that are reachable from the current one
   for nxt, d in enumerate(city[cur]):
+    # check if next node has not already been visited
+    # and if there is a bridge between the islands
     if nxt not in visited and d != -1:
       visited.add(nxt)
-      path_nxt_n = shortest(city, nxt, visited)
+      path_from_nxt_to_n = shortest(city, nxt, visited)
       visited.remove(nxt)
       
-      if path_nxt_n is not None:
-        path_cur_n = path_nxt_n + d
-        if best is None or path_cur_n < best:
-          best = path_cur_n
+      # check if there is a path from next to n
+      if path_from_nxt_to_n is not None:
+        # d = path from the current node to the next node
+        path_from_cur_to_n = path_from_nxt_to_n + d
+        # check if best pass can be updated (update if it is shorter)
+        if best is None or path_from_cur_to_n < best:
+          best = path_from_cur_to_n
               
   return best
